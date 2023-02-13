@@ -4,11 +4,11 @@ A maze-game server that generates one maze after another maze for you to play.
 
 ## Referenced work
 
-[GLM](https://github.com/g-truc/glm) is included as a submodule.
-[Node.js](https://nodejs.org/) for server architecturing.
-[Express](https://expressjs.com/) as server-side dependency.
-[Socket.io](https://socket.io/docs/v4/) for browser-server communication.
-[cmake-js](https://github.com/cmake-js/cmake-js) for Node.js addon building.
+* [GLM](https://github.com/g-truc/glm) is included as a submodule.
+* [Node.js](https://nodejs.org/) for server architecturing.
+* [Express](https://expressjs.com/) as server-side dependency.
+* [Socket.io](https://socket.io/docs/v4/) for browser-server communication.
+* [cmake-js](https://github.com/cmake-js/cmake-js) for Node.js addon building.
 
 The following projects are included as plain source-code:
 
