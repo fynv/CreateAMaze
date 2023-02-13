@@ -24,7 +24,11 @@ let map_filenames = {
 
 export async function load(doc)
 {
+	let start_maze_id = localStorage.getItem('current_maze') || 0;
+	
 	let socket = io();
+	socket.emit('player', start_maze_id.toString());
+	
 	let avatar = null;
 	let self = null;
 	
@@ -42,6 +46,7 @@ export async function load(doc)
 	
 	const init = async (identity) =>{
 		self = identity;
+		localStorage.setItem('current_maze', self.maze_id);
 		reset_users();
 		doc.reset();
 		doc.load_xml("maze.xml");
