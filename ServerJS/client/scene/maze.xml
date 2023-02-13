@@ -1,0 +1,14 @@
+﻿<?xml version="1.0"?>
+<document>
+	<scene>
+		<camera position="0,20,-5"/>		
+		<sky type="cube" path="assets\textures\cloudy" posx="bluecloud_face0.jpg" negx="bluecloud_face1.jpg" posy="bluecloud_face2.jpg" negy="bluecloud_face3.jpg" posz="bluecloud_face4.jpg" negz="bluecloud_face5.jpg"/>
+		<directional_light position="50,50,5" intensity="4" castShadow="True" size="4096, 4096" area="-30, 30, -35, 35, 40, 100" radius="0"/>		
+		
+		<!--<model src="assets\models\maze.glb" is_building="True" name="maze"/>
+		<model src="assets\models\balloon.glb" scale="0.01,0.01,0.01" position="0,1,0"/>
+		<avatar src="assets/models/CyberbotGold.glb" name_idle="idle" name_forward="walk_forward" name_backward="walk_backward" camera_position="0.0, 3.0, -4.0" lookat_height="2.0" url_anim="assets/models/Animations.glb" fix_anims="fix_anims" scale="1,1,1" position="-30,0,-30"/>
+		-->
+		
+	</scene>
+</document>
