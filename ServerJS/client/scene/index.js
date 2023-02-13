@@ -19,11 +19,19 @@ let map_filenames = {
 	red: "CyberbotRed.glb",
 	silver: "CyberbotSilver.glb",
 	yellow: "CyberbotYellow.glb"
-	
 }
 
 export async function load(doc)
 {
+	let UI =  document.createElement("div");
+	UI.style.cssText = "position:absolute; top:20px; left:60%; width:30%; height:15%; background:rgba(126, 126, 126, 0.5); border-radius:5%;";
+	
+	let StatusBar =  document.createElement("div");
+	StatusBar.style.cssText = "position:relative;";
+	UI.appendChild(StatusBar);
+	
+	document.body.appendChild(UI);
+	
 	let start_maze_id = localStorage.getItem('current_maze') || 0;
 	
 	let socket = io();
@@ -103,11 +111,13 @@ export async function load(doc)
 	};
 	
 	socket.on('full status', async (msg) =>{
+		let count = 0;
 		const info_users = JSON.parse(msg);
 		for (let _user_id in users)
 		{
 			const user = users[_user_id];
 			const info = info_users[_user_id];
+			if (info!=null) count++;
 			if (user!=null && info == null)
 			{
 				doc.remove(user);
@@ -135,6 +145,8 @@ export async function load(doc)
 				update_user_info(user, info);
 			}
 		}
+		
+		StatusBar.innerHTML = `Your are in Maze_${self.maze_id+1} as <div style="display: inline-block; color:${self.id};">${self.id}</div>! There are ${count} player(s) in the maze.`;
 	});
 	
 	socket.on('avatar status', (msg) =>{
