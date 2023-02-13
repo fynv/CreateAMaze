@@ -89,12 +89,12 @@ export async function load(doc)
 	});
 	
 	socket.on('identity', async (identity) =>{
+		current_maze_id = identity.maze_id;
 		reset_users();
 		doc.reset();
 		doc.load_xml("maze.xml");
 		let maze = await doc.create("model", {src: `assets/models/${identity.maze}`});
-		let balloon = await doc.create("model", {src: "assets/models/balloon.glb",  scale: "0.01,0.01,0.01", position: "30,1,-30"});
-		current_maze_id = identity.maze_id;
+		let balloon = await doc.create("model", {src: "assets/models/balloon.glb",  scale: "0.01,0.01,0.01", position: "30,1,-30"});		
 	});
 	
 	const update_user_info = (user, info) =>{
@@ -149,8 +149,7 @@ export async function load(doc)
 				users[_user_id] = user;
 				update_user_info(user, info);
 			}
-		}
-		
+		}		
 		StatusBar.innerHTML = `Your are viewing Maze_${current_maze_id+1} as God! There are ${count} player(s) in the maze.`;
 	});
 	
