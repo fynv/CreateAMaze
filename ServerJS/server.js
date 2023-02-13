@@ -89,10 +89,12 @@ fs.readFile("mazes.json", (err, data)=>{
 const io = new Server(server);
 io.on('connection', (socket) => {
     const ip = socket.handshake.headers['x-forwarded-for'] || socket.conn.remoteAddress.split(":")[3];
-    console.log("a user connected: "+ip);
+    console.log("a user connected: "+ip);   
     
+        
     socket.on("player", (msg)=>{
-        let start_maze_id = parseInt(msg);        
+        let start_maze_id = parseInt(msg);
+        
         let maze_id = -1;
         let maze = null;
         let user = null;  
@@ -173,6 +175,8 @@ io.on('connection', (socket) => {
                     return;
                 }               
             });
+            
+            io.sockets.in("gods").emit('num_mazes', arr_mazes.length.toString());
         }
         
         for (let i= start_maze_id; i<arr_mazes.length; i++)
@@ -225,8 +229,37 @@ io.on('connection', (socket) => {
         });
         
     });
+
     
-    
+    socket.on("god", ()=>{
+        socket.emit("num_mazes", arr_mazes.length.toString());
+        
+        let maze_id = -1;
+        let maze = null;
+        
+        socket.on("view", (msg)=>{
+            if (maze_id>=0)
+            {
+                socket.leave(maze_id); 
+            }
+            maze_id = parseInt(msg);
+            if (maze_id >= arr_mazes.length) maze_id = arr_mazes.length-1;
+            maze = arr_mazes[maze_id];
+            let viewer = {
+                maze_id: maze_id,
+                maze: `maze_${maze_id}.glb`,                
+            };
+            socket.emit("identity", viewer);
+            socket.join(maze_id);
+            socket.join("gods");
+            socket.emit("full status", JSON.stringify(maze.users));
+        });
+        
+        socket.on('disconnect', () => {
+            console.log('user disconnected: ' + ip);
+        });
+        
+    });
     
 });
 
