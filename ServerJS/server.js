@@ -11,6 +11,7 @@ const express = require('express');
 const http = require('http');
 const { Server } = require("socket.io");
 const MazeNode = require('../build/Release/MazeNode');
+const fs = require('fs');
 
 ////////////// Start ///////////////////////////////
 
@@ -69,6 +70,21 @@ class Maze
 }
 
 const arr_mazes = [];
+let arr_mazes_static = [];
+
+fs.readFile("mazes.json", (err, data)=>{
+    if (err)
+    {
+        console.log(err);
+        return;
+    }
+    arr_mazes_static = JSON.parse(data);
+    for (let record of arr_mazes_static)
+    {
+        let maze = new Maze(record.maze_id, record.start_points);
+        arr_mazes.push(maze);
+    }
+});
 
 const io = new Server(server);
 io.on('connection', (socket) => {
@@ -141,6 +157,20 @@ io.on('connection', (socket) => {
         let maze = new Maze(maze_id, arr);
         arr_mazes.push(maze);
         join_maze(maze_id);
+        
+        let record = {
+            maze_id: maze_id,
+            start_points: arr
+        };
+        arr_mazes_static.push(record);
+        fs.writeFile("mazes.json", JSON.stringify(arr_mazes_static), (err) => 
+        {
+            if (err)
+            {
+                console.log(err);
+                return;
+            }               
+        });
     }
     
     for (let i=0; i<arr_mazes.length; i++)
